@@ -25,46 +25,45 @@ include("connect.php");
 				<table border="1" class="table table-striped">
 					<thead>
 						<tr> 
-							<td width= "15%">Action</td>
-							<td width= "25%">Full Name</td>
-							<td width= "20%">Email</td>
-							<td width= "20%">Purchased Item</td>
-							<td width= "10%">Qty</td>
-							<td width= "10%">Total Price</td>
+							<td width= "10%">Action</td>
+							<td width= "10%">Body Number</td>
+							<td width= "15%">Full Name</td>
+							<td width= "15%">Motor Number/td>
+							<td width= "10%">Chasis  Number</td>
+							<td width= "20%">Route</td>
+							<td width= "10%">Date of Expiry</td>
 						</tr>
 					</thead>
 					<tbody>
 						<?php $ctr = 0; ?>
 						<?php $sql_category = "
 						SELECT 
-							tr.ID, tr.qty, tr.total_price, pr.product_name, me.first_name, me.last_name, me.email_address
-						FROM transactions AS tr
+							ml.body_number, ml.names, ml.route, ml.date_of_expiry, it.motor_number, it.chasis_number
+						FROM mtop_masterlist_2024 AS ml
 						JOIN
-							members AS me ON tr.members_ID = me.ID
-						JOIN
-							products AS pr ON tr.products_ID = pr.ID
-							WHERE tr.status = 0
+							individual_transaction AS it ON ml.body_number = it.body_number
 							" ?>
 						<?php $qry_category = mysqli_query($conn, $sql_category); ?>
 						<?php while($get_category = mysqli_fetch_array($qry_category)){ ?>
 						<?php $ctr++; ?>
 						<tr>
-							<td> <a href="process.approve.php?action=approve&transaction_ID=<?php echo $get_category["ID"] ?>"> 
-							Aprove</a> /
-							<a href="process.reject.php?action=reject&transaction_ID=<?php echo $get_category["ID"] ?>">
-							Reject</a>
+							<td> <a href="update.php?action=update&body_number=<?php echo $get_category["body_number"]; ?>"> 
+							Update</a> /
+							<a href="process.reject.php?action=reject&transaction_ID=<?php echo $get_category["body_number"]; ?>">
+							Delete</a>
 							</td>
-							<td><?php echo $get_category["last_name"].", ".$get_category["first_name"] ?></td>
-							<td><?php echo $get_category["email_address"] ?></td>
-							<td><?php echo $get_category["product_name"] ?></td>
-							<td class="text-end"><?php echo $get_category["qty"] ?></td>
-							<td class="text-end"><?php echo $get_category["total_price"] ?></td>
+							<td><?php echo $get_category["body_number"]?></td>
+							<td><?php echo $get_category["names"] ?></td>
+							<td><?php echo $get_category["motor_number"] ?></td>
+							<td><?php echo $get_category["chasis_number"] ?></td>
+							<td><?php echo $get_category["route"] ?></td>
+							<td class="text-end"><?php echo $get_category["date_of_expiry"] ?></td>
 						</tr>
 						<?php } ?>
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan = "3">Total Categories :<?php echo $ctr; ?></td>
+							<td colspan = "3">Total Entries :<?php echo $ctr; ?></td>
 						</tr>
 					</tfoot>
 				</table>

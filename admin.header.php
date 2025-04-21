@@ -1,13 +1,13 @@
 <?php
 session_start();
-if ($_SESSION['status'] < 1 || empty($_SESSION['session_id'])) {
-    header("location: index.php");
-    exit();
-}
+// if ($_SESSION['status'] < 1 || empty($_SESSION['session_id'])) {
+//     header("location: index.php");
+//     exit();
+// }
 ?>
 <html>
 <head>
-<title>Shopping Cart</title>
+<title>MTOP Database</title>
 <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="styles/styles.css" />
 <script language="javascript" src="bootstrap/js/bootstrap.js"></script>

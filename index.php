@@ -65,6 +65,7 @@
                     }, function(data,status) {
                         
 						if(status == "success"){
+                            alert("succ");
                         window.location = "dashboard.php";
 						}
                     })

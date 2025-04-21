@@ -20,7 +20,7 @@ WHERE
          $password);
         
         $username = $_POST['uname'];
-        $password = md5($_POST['pword']); 
+        $password = $_POST['pword']; 
 
         mysqli_stmt_execute($statement_check);
         
