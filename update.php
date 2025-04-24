@@ -7,36 +7,43 @@ if(!file_exists("connect.php")){
 }
 include("connect.php");
 $txt_body_number = "";
+if(isset($_GET["search"])){
+    
+$txt_body_number = $_GET["search"];
+}
 $txt_full_name = "";
 $txt_route = "";
 $txt_date_of_expiry = "";
-$txt_motor_number = "";
-$txt_chasis_number = "";
-$txt_plate_number = "";
+$txt_date_received = "";
+$txt_resolution_number = "";
+$txt_date_released = "";
 $txt_status = "";
+$txt_latest_transaction = "";
+
 if (@$_GET["action"] == "update"){
-	$sql_cat = "SELECT  ml.body_number, ml.names, ml.route, ml.date_of_expiry, it.motor_number, it.chasis_number, ml.status
-                FROM mtop_masterlist_2024 ml 
-                JOIN individual_transaction it ON it.body_number = ml.body_number 
-                WHERE ml.body_number = ?";
+	$sql_cat = "SELECT  body_number, names, route, date_of_expiry, date_received, date_released, resolution_number, status, latest_transaction
+                FROM mtop_masterlist_2024
+                WHERE body_number = ?";
 
     if ($cat_check = mysqli_prepare($conn, $sql_cat)){
-        mysqli_stmt_bind_param($cat_check, "i", $body_number,);
+        mysqli_stmt_bind_param($cat_check, "s", $body_number,);
         
         $body_number = $_GET['body_number'];
 
         mysqli_stmt_execute($cat_check);
         
-        mysqli_stmt_bind_result($cat_check, $body_number, $names, $route, $date_of_expiry, $motor_number, $chasis_number, $status);
+        mysqli_stmt_bind_result($cat_check, $body_number, $names, $route, $date_of_expiry, $date_received, $date_released, $resolution_number, $status, $latest_transaction);
         while(mysqli_stmt_fetch($cat_check)){
 			
             $txt_body_number = $body_number;
             $txt_full_name = $names;
             $txt_route = $route;
             $txt_date_of_expiry = $date_of_expiry;
-            $txt_motor_number = $motor_number;
-            $txt_chasis_number = $chasis_number;
+            $txt_date_received = $date_received;
+            $txt_date_released = $date_released;
+            $txt_resolution_number = $resolution_number;
             $txt_status = $status;
+            $txt_latest_transaction = $latest_transaction;
 
 
 
@@ -60,39 +67,37 @@ if (@$_GET["action"] == "update"){
             </div>
         </div>
 
+        <div class="col-sm-6">                
+            <div class="d-inline-flex col-4 p-2">
+                <div class="form-group">
+                    <label>Body Number</label>   
+                    <input value="<?php echo $txt_body_number; ?>" type="text" id="body_number" class="form-control rounded" placeholder="Body Number" >            
+                </div>
+        </div>
+
+        
+            
+        <div class="d-inline-flex align-bottom p-2">
+                <button type="button" id="BtnSearch" class="btn btn-warning btn-block d-inline">Search by Body Number</button>
+            </div>
+
+            
+        </div>
+
+
         <div class="row p-2">
         
-        <div class="col-sm-2 ">
-            <div class="form-group">
-                                <label>Body Number</label>   
-                                <input value="<?php echo $txt_body_number; ?>" type="text" id="body_number" class="form-control rounded" placeholder="Body Number" > 
-                            
-            </div>
-        </div>
         
-        <div class="col-sm-3 ">
+        
+        <div class="col-sm-4 ">
             <div class="form-group">
                                 <label>Full Name</label>   
                                 <input value="<?php echo $txt_full_name; ?>" type="text" id="full_name" class="form-control rounded" placeholder="Full Name" > 
                             
             </div>
         </div>
+
         
-        <div class="col-sm-3 ">
-            <div class="form-group">
-                                <label>Motor Number</label>   
-                                <input value="<?php echo $txt_motor_number; ?>" type="text" id="motor_number" class="form-control rounded" placeholder="Motor Number" > 
-                            
-            </div>
-        </div>
-        
-        <div class="col-sm-3 ">
-            <div class="form-group">
-                                <label>Chasis Number</label>   
-                                <input value="<?php echo $txt_chasis_number; ?>" type="text" id="chasis_number" class="form-control rounded" placeholder="Chasis Number" > 
-                            
-            </div>
-        </div>
         
         <div class="col-sm-4 ">
             <div class="form-group">
@@ -104,8 +109,35 @@ if (@$_GET["action"] == "update"){
         
         <div class="col-sm-2 ">
             <div class="form-group">
-                                <label>Plate Number</label>   
-                                <input value="<?php echo $txt_plate_number; ?>" type="text" id="plate_number" class="form-control rounded" placeholder="Plate Number" > 
+                                <label>Status</label>   
+                                <input value="<?php echo $txt_status; ?>" type="text" id="status" class="form-control rounded" placeholder="Status" > 
+                            
+            </div>
+        </div>
+        
+
+        <div class="row col-sm-12">
+            
+        <div class="col-sm-3 ">
+            <div class="form-group">
+                                <label>Resolution Number</label>   
+                                <input value="<?php echo $txt_resolution_number; ?>" type="text" id="resolution_number" class="form-control rounded" placeholder="Resolution Number" > 
+                            
+            </div>
+        </div>
+        
+        <div class="col-sm-2 ">
+            <div class="form-group">
+                                <label>Date Received</label>   
+                                <input value="<?php echo $txt_date_received; ?>" type="text" id="date_received" class="form-control rounded" placeholder="Date Received" > 
+                            
+            </div>
+        </div>
+        
+        <div class="col-sm-2 ">
+            <div class="form-group">
+                                <label>Date Released</label>   
+                                <input value="<?php echo $txt_date_released; ?>" type="text" id="date_released" class="form-control rounded" placeholder="Date Released" > 
                             
             </div>
         </div>
@@ -113,22 +145,24 @@ if (@$_GET["action"] == "update"){
         <div class="col-sm-2 ">
             <div class="form-group">
                                 <label>Date of Expiry</label>   
-                                <input value="<?php echo $txt_date_of_expiry; ?>" type="date" id="date_of_expiry" class="form-control rounded" placeholder="Date of Expiry" > 
+                                <input value="<?php echo $txt_date_of_expiry; ?>" type="text" id="date_of_expiry" class="form-control rounded" placeholder="Date of Expiry" > 
                             
             </div>
         </div>
+
+        </div>
         
-        <div class="col-sm-3 ">
+        <div class="col-sm-5 ">
             <div class="form-group">
-                                <label>Status</label>   
-                                <input value="<?php echo $txt_status; ?>" type="text" id="status" class="form-control rounded" placeholder="Status" > 
+                                <label>Latest Transaction</label>   
+                                <input value="<?php echo $txt_latest_transaction; ?>" type="text" id="latest_transaction" class="form-control rounded" placeholder="Last Transaction" > 
                             
             </div>
         </div>
 
             
         <div class="row p-3">
-            <div class="col-sm-2 ">
+            <div class="col-sm-3">
                 <div class="form-group">
 					<input type="hidden" value="<?php echo $txt_id; ?>" id="body_number" >
                     <button type="button" id="BtnAddUnit" class="btn btn-warning btn-block">Save Record</button>
@@ -145,23 +179,35 @@ if (@$_GET["action"] == "update"){
 							<td width= "10%">Action</td>
 							<td width= "10%">Body Number</td>
 							<td width= "15%">Full Name</td>
-							<td width= "10%">Motor Number</td>
-							<td width= "10%">Chasis  Number</td>
-							<td width= "10%">Plate  Number</td>
 							<td width= "10%">Route</td>
 							<td width= "10%">Date of Expiry</td>
+							<td width= "10%">Resolution  Number</td>
+							<td width= "10%">Date Received</td>
+							<td width= "10%">Date Released</td>
 							<td width= "10%">Status</td>
+							<td width= "10%">Latest Transaction</td>
 						</tr>
 					</thead>
+                    
 					<tbody>
+                        
 						<?php $ctr = 0; ?>
-						<?php $sql_unit = "
-						SELECT 
-							ml.body_number, ml.names, ml.route, ml.date_of_expiry, it.motor_number, it.chasis_number, ml.status
-						FROM mtop_masterlist_2024 AS ml
-						LEFT JOIN
-							individual_transaction AS it ON ml.body_number = it.body_number
-							" ?>
+						<?php 
+                        if (empty($_GET["search"])){
+                        $sql_unit = "SELECT body_number, names, route, date_of_expiry, date_received, date_released, resolution_number, status, latest_transaction
+						             FROM mtop_masterlist_2024" ;
+                         } else{
+                            $sql_unit = "SELECT body_number, names, route, date_of_expiry, date_received, date_released, resolution_number, status, latest_transaction
+						                 FROM mtop_masterlist_2024 WHERE body_number = '".$_GET["search"]."'";
+
+                                        // echo $sql_unit; //debugging show sql
+                         }
+                         
+                         
+                         
+                         ?>
+
+                        
 						<?php $qry_unit = mysqli_query($conn, $sql_unit); ?>
 						<?php while($get_unit = mysqli_fetch_array($qry_unit)){ ?>
 						<?php $ctr++; ?>
@@ -173,12 +219,13 @@ if (@$_GET["action"] == "update"){
 							</td>
 							<td><?php echo $get_unit["body_number"]?></td>
 							<td><?php echo $get_unit["names"] ?></td>
-							<td><?php echo $get_unit["motor_number"] ?></td>
-							<td><?php echo $get_unit["chasis_number"] ?></td>
-							<td><?php echo "No plates yet" ?></td>
 							<td><?php echo $get_unit["route"] ?></td>
 							<td><?php echo $get_unit["date_of_expiry"] ?></td>
-							<td class="text-end"><?php echo $get_unit["status"] ?></td>
+							<td><?php echo $get_unit["resolution_number"] ?></td>
+							<td><?php echo $get_unit["date_received"] ?></td>
+							<td><?php echo $get_unit["date_released"] ?></td>
+							<td><?php echo $get_unit["status"] ?></td>
+							<td class="text-end"><?php echo $get_unit["latest_transaction"] ?></td>
 						</tr>
 						<?php } ?>
 					</tbody>
@@ -200,13 +247,14 @@ if (@$_GET["action"] == "update"){
             
 
                 var txt_body_number = $("#body_number").val();
-                var txt_chasis_number = $("#chasis_number").val();
+                var txt_resolution_number = $("#resolution_number").val();
                 var txt_date_of_expiry = $("#date_of_expiry").val();
                 var txt_full_name = $("#full_name").val();
-                var txt_motor_number = $("#motor_number").val();
-                //var txt_plate_number = $("#date_of_expiry").val(); unimplemented
+                var txt_date_received = $("#date_received").val();
+                var txt_date_released = $("#date_released").val();
                 var txt_route = $("#route").val();
                 var txt_status = $("#status").val();
+                var txt_latest_transaction = $("#latest_transaction").val();
                 
 
 
@@ -220,12 +268,14 @@ if (@$_GET["action"] == "update"){
                     
                     $.post("process.units.php", {
                         body_number: txt_body_number,
-                        chasis_number: txt_chasis_number,
+                        resolution_number: txt_resolution_number,
                         date_of_expiry: txt_date_of_expiry,
                         names: txt_full_name,
-                        motor_number: txt_motor_number,
+                        date_received: txt_date_received,
+                        date_released: txt_date_released,
                         route: txt_route,
-                        status: txt_status
+                        status: txt_status,
+                        latest_transaction: txt_latest_transaction
 
                     }, function(data,status) {
                         
@@ -235,6 +285,21 @@ if (@$_GET["action"] == "update"){
 						}
                     })
                 }
+            });
+
+
+            $("#BtnSearch").on("click", function() {
+                var txt_body_number = $("#body_number").val();
+                let pagelink = "update.php";
+                
+                let result = pagelink.concat("?search=",txt_body_number);
+               
+                //alert(result); // debugging tool show result
+                
+                window.location = result;
+
+
+
             });
 
 

@@ -31,34 +31,38 @@ else{
 		}
 	}
 	else{
-		$sqlML = "UPDATE mtop_masterlist_2024 SET names = ?, route = ?, date_of_expiry = ?, status = ? WHERE body_number = ?";
+		$sqlML = "UPDATE mtop_masterlist_2024 SET names = ?, route = ?, date_of_expiry = ?, resolution_number = ?, date_received = ?, date_released = ?, status = ?, latest_transaction = ? WHERE body_number = ?";
 		if ($statement_check = mysqli_prepare($conn, $sqlML)){
-			mysqli_stmt_bind_param($statement_check, "sssss" , $names, $route, $date_of_expiry, $status, $body_number );
+			mysqli_stmt_bind_param($statement_check, "sssssssss" , $names, $route, $date_of_expiry, $resolution_number, $date_received, $date_released, $status, $body_number, $latest_transaction );
 			
 			$names = $_POST["names"];
 			$route = $_POST["route"];
 			$date_of_expiry = $_POST["date_of_expiry"];
+			$resolution_number = $_POST["resolution_number"];
+			$date_received = $_POST["date_received"];
+			$date_released = $_POST["date_released"];
 			$status = $_POST["status"];
 			$body_number = $_POST["body_number"];
+			$latest_transaction = $_POST["latest_transaction"];
 
 			mysqli_stmt_execute($statement_check);
         
 		}
 
 
-		$sqlIT = "UPDATE individual_transaction SET chasis_number = ?, motor_number = ? WHERE body_number = ?";
-		if ($statement_check = mysqli_prepare($conn, $sqlIT)){
-			mysqli_stmt_bind_param($statement_check, "sss", $chasis_number, $motor_number, $body_number);
+		// $sqlIT = "UPDATE individual_transaction SET chasis_number = ?, motor_number = ? WHERE body_number = ?";
+		// if ($statement_check = mysqli_prepare($conn, $sqlIT)){
+		// 	mysqli_stmt_bind_param($statement_check, "sss", $chasis_number, $motor_number, $body_number);
 			
-			$chasis_number = $_POST["chasis_number"];
-			$motor_number = $_POST['motor_number'];
-			$body_number = $_POST['body_number'];
+		// 	$chasis_number = $_POST["chasis_number"];
+		// 	$motor_number = $_POST['motor_number'];
+		// 	$body_number = $_POST['body_number'];
 			?>
-			<script> alert("<?php echo $body_number; ?>")</script>
+			<script> //alert("<?php // echo $body_number; ?>")</script>
 			<?php
-			//mysqli_stmt_execute($statement_check);
+		// 	//mysqli_stmt_execute($statement_check);
         
-		}
+		// }
 	}
 
     
