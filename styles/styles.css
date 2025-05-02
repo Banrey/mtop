@@ -1,3 +1,36 @@
 .required {
-  color: red;
+  background-color: red;
+}
+
+.elopez{  
+  background-color: #c00000;
+}
+
+.BAGTIC{
+  background-color:#375623;
+}
+.GUIMBALA-ON{
+  background-color:#92d050;
+}
+.BALARING{
+  background-color:#0066ff;
+}
+.HAWAIIAN{
+  background-color:#ffc000;
+}
+.LANTAD{
+  background-color:#ff6600;
+}
+.CROSSING{
+  background-color:#663300;
+}
+.BAGROY{
+  background-color:#ff99cc;
+}
+.GUIMBATDA{
+  background-color:#9966ff;
+}
+
+#table{  
+  background-color:#9966ff;
 }

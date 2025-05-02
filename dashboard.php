@@ -56,8 +56,8 @@ include("connect.php");
 							<td><?php echo $get_category["names"] ?></td>
 							<td><?php echo $get_category["motor_number"] ?></td>
 							<td><?php echo $get_category["chasis_number"] ?></td>
-							<td><?php echo $get_category["route"] ?></td>
-							<td class="text-end"><?php echo $get_category["date_of_expiry"] ?></td>
+							<td class = "BAGTIC"><?php echo $get_category["route"] ?></td>
+							<td class="text-end elopez"><?php echo $get_category["date_of_expiry"] ?></td>
 						</tr>
 						<?php } ?>
 					</tbody>

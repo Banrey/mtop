@@ -55,6 +55,7 @@ if (@$_GET["action"] == "update"){
 
 ?>
 
+
 <div class="container my-1 border">
     <div class="row">
         <div class="col-sm-12 "><?php include("navigation.php") ?></div>
@@ -63,15 +64,15 @@ if (@$_GET["action"] == "update"){
     <div class="container border">
         <div class="row p-2">
             <div class="col-sm-12 ">
-                <h3>Units *</h3>
+                <h3>Units</h3>
             </div>
         </div>
 
         <div class="col-sm-6">                
             <div class="d-inline-flex col-4 p-2">
                 <div class="form-group">
-                    <label>Body Number</label>   
-                    <input value="<?php echo $txt_body_number; ?>" type="text" id="body_number" class="form-control rounded" placeholder="Body Number" >            
+                    <label>Body Number *</label>   
+                    <input value="<?php echo $txt_body_number; ?>" type="text" id="body_number" class="form-control rounded" placeholder="Body Number" required pattern="[^\s]" title="This is required">            
                 </div>
         </div>
 
@@ -101,7 +102,7 @@ if (@$_GET["action"] == "update"){
         
         <div class="col-sm-4 ">
             <div class="form-group">
-                                <label>Route</label>   
+                                <label>Route *</label>   
                                 <input value="<?php echo $txt_route; ?>" type="text" id="route" class="form-control rounded" placeholder="Route" > 
                             
             </div>
@@ -109,7 +110,7 @@ if (@$_GET["action"] == "update"){
         
         <div class="col-sm-2 ">
             <div class="form-group">
-                                <label>Status</label>   
+                                <label>Status *</label>   
                                 <input value="<?php echo $txt_status; ?>" type="text" id="status" class="form-control rounded" placeholder="Status" > 
                             
             </div>
@@ -120,7 +121,7 @@ if (@$_GET["action"] == "update"){
             
         <div class="col-sm-3 ">
             <div class="form-group">
-                                <label>Resolution Number</label>   
+                                <label>Resolution Number *</label>   
                                 <input value="<?php echo $txt_resolution_number; ?>" type="text" id="resolution_number" class="form-control rounded" placeholder="Resolution Number" > 
                             
             </div>
@@ -173,7 +174,7 @@ if (@$_GET["action"] == "update"){
 
         <div class="row p-2">
             <div class="col-sm-12 ">
-				<table border="1" class="table table-striped">
+				<table class="table table-striped">
 					<thead>
 						<tr> 
 							<td width= "10%">Action</td>
@@ -214,17 +215,63 @@ if (@$_GET["action"] == "update"){
 						<tr>
 							<td> <a href="update.php?action=update&body_number=<?php echo $get_unit["body_number"]; ?>"> 
 							Update</a> /
-							<a href="process.reject.php?action=reject&transaction_ID=<?php echo $get_unit["body_number"]; ?>">
+							<a href="process.units.php?action=delete&body_number=<?php echo $get_unit["body_number"]; ?>">
 							Delete</a>
 							</td>
 							<td><?php echo $get_unit["body_number"]?></td>
-							<td><?php echo $get_unit["names"] ?></td>
-							<td><?php echo $get_unit["route"] ?></td>
+							<td ><?php echo $get_unit["names"] ?></td>
+							<td 
+
+							<?php 
+
+							switch ($get_unit["route"]) {
+								case "E. LOPEZ":
+									echo "style = \"background-color: #c00000; color: white \"";
+									break;
+								case "BAGTIC":
+									echo "style = \"background-color: #375623;  color: white \"";
+									break;
+                                    case "GUIMBALA-ON":
+                                        echo "style = \"background-color: #92d050;  color: white \"";
+                                        break;
+                                    case "BALARING":
+                                        echo "style = \"background-color: #0066ff;  color: white \"";
+                                        break;
+                                    case "HAWAIIAN":
+                                        echo "style = \"background-color: #ffc000;  color: white \"";
+                                        break;
+                                    case "LANTAD":
+                                        echo "style = \"background-color: #ff6600;  color: white \"";
+                                        break;
+                                    case "CROSSING LUGUAY/MAMBAG-ID":
+                                        echo "style = \"background-color: #663300;  color: white \"";
+                                        break;
+                                    case "LUGUAY ADELA - BAGROY":
+                                        echo "style = \"background-color: #ff99cc;  color: white \"";
+                                        break;
+                                    case "GUIMBATDA":
+                                        echo "style = \"background-color: #9966ff;  color: white \"";
+                                        break;
+								default:
+							}
+							
+							
+							?>
+                            
+                            ><?php echo $get_unit["route"] ?></td>
 							<td><?php echo $get_unit["date_of_expiry"] ?></td>
 							<td><?php echo $get_unit["resolution_number"] ?></td>
 							<td><?php echo $get_unit["date_received"] ?></td>
 							<td><?php echo $get_unit["date_released"] ?></td>
-							<td><?php echo $get_unit["status"] ?></td>
+							<td 
+                            <?php switch ($get_unit["status"]) {
+                                case "EXPIRED": echo"class = \"bg-danger\"";
+                                break;
+                                default: echo"class = \"bg-success\"";
+
+                            }?>
+                            
+                            ><?php echo $get_unit["status"] ?></td>
 							<td class="text-end"><?php echo $get_unit["latest_transaction"] ?></td>
 						</tr>
 						<?php } ?>
@@ -280,7 +327,6 @@ if (@$_GET["action"] == "update"){
                     }, function(data,status) {
                         
 						if(status == "success"){
-                            alert(data);
                         window.location = "update.php";
 						}
                     })

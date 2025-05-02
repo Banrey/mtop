@@ -1,0 +1,51 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here
+
+// Create your own map
+$custom-colors: (
+  "custom-color": #900
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+
+.required {
+    background-color: red;
+  }
+  
+  .elopez{  
+    background-color: $yellow-300;
+  }
+  
+  .BAGTIC{
+    background-color:rgb(55,86,35);
+  }
+  .GUIMBALA-ON{
+    background-color:rgb(146,208,80);;
+  }
+  .BALARING{
+    background-color:rgb(0,102,255);;
+  }
+  .HAWAIIAN{
+    background-color:rgb(255,192,0);;
+  }
+  .LANTAD{
+    background-color:rgb(255,102,0);;
+  }
+  .CROSSING{
+    background-color:rgb(102,51,0);;
+  }
+  .BAGROY{
+    background-color:rgb(255,153,204);;
+  }
+  .GUIMBATDA{
+    background-color:rgb(153,102,255);;
+  }
+  

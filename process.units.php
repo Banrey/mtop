@@ -8,18 +8,39 @@ include("connect.php");
 
 
 if (@$_GET["action"] == "delete"){
-	$sql_delete = "DELETE FROM mtop_masterlist_2024 AS ml
-					LEFT JOIN individual_transaction AS it ON ml.body_number = it.body_number WHERE ID = ?";
+	$sql_delete = "DELETE FROM mtop_masterlist_2024 WHERE body_number = ?";
 	if ($delete_check = mysqli_prepare($conn, $sql_delete)){
-		mysqli_stmt_bind_param($delete_check, "i", $id);
-		$id = $_GET["id"];
+		mysqli_stmt_bind_param($delete_check, "i", $body_number);
+		$body_number = $_GET["body_number"];
 		mysqli_stmt_execute($delete_check);
 		header("location: update.php");
 		exit();
 	}
 }
-else{
-	if (empty($_POST["body_number"])){
+else{ $checksql = "SELECT COUNT(body_number) FROM mtop_masterlist_2024 AS ctr WHERE body_number = ?";
+
+	if ($statement_check = mysqli_prepare($conn, $checksql)){
+		mysqli_stmt_bind_param($statement_check, "s",  $body_number );
+		
+		$body_number = $_POST["body_number"];
+		mysqli_stmt_execute($statement_check);
+
+		mysqli_stmt_bind_result($statement_check, $CTR);
+
+		while(mysqli_stmt_fetch($statement_check)){
+			
+            $check_body_number = $CTR;
+
+
+
+            
+        }
+	
+	}
+
+
+
+	if ($check_body_number === 0){
 		$sql_check = "INSERT INTO mtop_masterlist_2024 (names, route, date_of_expiry, resolution_number, date_received, date_released, status, body_number, latest_transaction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		if ($statement_check = mysqli_prepare($conn, $sql_check)){
 			mysqli_stmt_bind_param($statement_check, "sssssssss",  $names, $route, $date_of_expiry, $resolution_number, $date_received, $date_released, $status, $body_number, $latest_transaction );
