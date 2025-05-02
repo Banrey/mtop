@@ -294,7 +294,6 @@ if (@$_GET["action"] == "update"){
                 
                 let result = pagelink.concat("?search=",txt_body_number);
                
-                //alert(result); // debugging tool show result
                 
                 window.location = result;
 
