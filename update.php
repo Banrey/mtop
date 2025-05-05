@@ -267,12 +267,27 @@ if (@$_GET["action"] == "update"){
                             <?php switch ($get_unit["status"]) {
                                 case "EXPIRED": echo"class = \"bg-danger\"";
                                 break;
-                                default: echo"class = \"bg-success\"";
+                                default: echo"class = \"bg-warning\"";
 
                             }?>
                             
                             ><?php echo $get_unit["status"] ?></td>
-							<td class="text-end"><?php echo $get_unit["latest_transaction"] ?></td>
+							<td 
+                            <?php 
+                            
+                            if (str_starts_with($get_unit["latest_transaction"],"CU")) { 
+                                echo "style = \"background-color: #375623;  color: white \"";
+                            }
+                            elseif (str_starts_with($get_unit["latest_transaction"],"CN")) { 
+                                echo "style = \"background-color: #ffc000;  color: white \"";
+                            }
+                            elseif (str_starts_with($get_unit["latest_transaction"],"TO")) { 
+                                echo "style = \"background-color: #002060;  color: white \"";
+                            }else{ echo "style = \"background-color: #c00000;  color: white \"";
+
+                            }
+                            
+                            ?>><?php echo $get_unit["latest_transaction"] ?></td>
 						</tr>
 						<?php } ?>
 					</tbody>
