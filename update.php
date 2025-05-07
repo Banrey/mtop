@@ -49,8 +49,8 @@ if (@$_GET["action"] == "update"){
 
             
         }
-    }
 
+    }
 }
 
 ?>
@@ -103,8 +103,22 @@ if (@$_GET["action"] == "update"){
         <div class="col-sm-4 ">
             <div class="form-group">
                                 <label>Route *</label>   
-                                <input value="<?php echo $txt_route; ?>" type="text" id="route" class="form-control rounded" placeholder="Route" > 
-                            
+                                <!-- <input value="<?php //echo $txt_route; ?>" type="text" id="route" class="form-control rounded" placeholder="Route" >  -->
+                                 <select class="form-select" name="route" id="route">
+                                 <option value="" disabled>No Route Assigned</option>
+                                 <option value="SILAY CITY PROPER">SILAY CITY PROPER</option>
+                                 <option value="BRGY. E. LOPEZ">BRGY. E. LOPEZ</option>
+                                 <option value="BRGY. BAGTIC">BRGY. BAGTIC</option>
+                                 <option value="BRGY. GUIMBALA-ON">BRGY. GUIMBALA-ON</option>
+                                 <option value="BRGY. BALARING">BRGY. BALARING</option>
+                                 <option value="BRGY. HAWAIIAN">BRGY. HAWAIIAN</option>
+                                 <option value="BRGY. LANTAD">BRGY. LANTAD</option>
+                                 <option value="CROSSING LUGUAY-MAMBAG-ID">CROSSING LUGUAY-MAMBAG-ID</option>
+                                 <option value="LUGUAY - ADELA - BAGROY">LUGUAY - ADELA - BAGROY</option>
+                                 <option value="GUIMBALAON PROPER & VICE VERSA">GUIMBALAON PROPER & VICE VERSA</option>
+
+                                 </select>
+                            <script> $('#route').val("<?php echo $txt_route; ?>"); </script>
             </div>
         </div>
         
@@ -225,32 +239,35 @@ if (@$_GET["action"] == "update"){
 							<?php 
 
 							switch ($get_unit["route"]) {
-								case "E. LOPEZ":
+								case "BRGY. E. LOPEZ":
 									echo "style = \"background-color: #c00000; color: white \"";
 									break;
-								case "BAGTIC":
+								case "BRGY. BAGTIC":
 									echo "style = \"background-color: #375623;  color: white \"";
 									break;
-                                    case "GUIMBALA-ON":
+                                    case "BRGY. GUIMBALA-ON":
                                         echo "style = \"background-color: #92d050;  color: white \"";
                                         break;
-                                    case "BALARING":
+                                    case "BRGY. BALARING":
                                         echo "style = \"background-color: #0066ff;  color: white \"";
                                         break;
-                                    case "HAWAIIAN":
-                                        echo "style = \"background-color: #ffc000;  color: white \"";
+                                    case "BRGY. HAWAIIAN":
+                                        echo "style = \"background-color: #ffc000;  color: black \"";
                                         break;
-                                    case "LANTAD":
+                                    case "BRGY. LANTAD":
                                         echo "style = \"background-color: #ff6600;  color: white \"";
                                         break;
-                                    case "CROSSING LUGUAY/MAMBAG-ID":
+                                    case "CROSSING LUGUAY-MAMBAG-ID":
                                         echo "style = \"background-color: #663300;  color: white \"";
                                         break;
-                                    case "LUGUAY ADELA - BAGROY":
-                                        echo "style = \"background-color: #ff99cc;  color: white \"";
+                                    case "LUGUAY - ADELA - BAGROY":
+                                        echo "style = \"background-color: #ff99cc;  color: black \"";
                                         break;
-                                    case "GUIMBATDA":
+                                    case "GUIMBALAON PROPER & VICE VERSA":
                                         echo "style = \"background-color: #9966ff;  color: white \"";
+                                        break;
+                                    case "SILAY CITY PROPER":
+                                        
                                         break;
 								default:
 							}
@@ -281,9 +298,15 @@ if (@$_GET["action"] == "update"){
                             elseif (str_starts_with($get_unit["latest_transaction"],"CN")) { 
                                 echo "style = \"background-color: #ffc000;  color: white \"";
                             }
-                            elseif (str_starts_with($get_unit["latest_transaction"],"TO")) { 
-                                echo "style = \"background-color: #002060;  color: white \"";
-                            }else{ echo "style = \"background-color: #c00000;  color: white \"";
+                            elseif ($get_unit["latest_transaction"]== "RENEWAL") { 
+                                echo "style = \"background-color: #c00000;  color: white \"";
+                            }
+                            elseif (str_starts_with($get_unit["latest_transaction"],"NEW APPLICANT")) { 
+                                echo "style = \"background-color: #db8644;  color: white \"";
+                            }
+                            elseif ($get_unit["latest_transaction"]== null) { 
+                                echo "style = \"background-color: #ffffff;  color: white \"";
+                            }else{ echo "style = \"background-color: #002060;  color: white \"";
 
                             }
                             
@@ -318,6 +341,7 @@ if (@$_GET["action"] == "update"){
                 var txt_status = $("#status").val();
                 var txt_latest_transaction = $("#latest_transaction").val();
                 
+                
 
 
                 if (txt_body_number == null || txt_body_number == "") {
@@ -338,6 +362,7 @@ if (@$_GET["action"] == "update"){
                         route: txt_route,
                         status: txt_status,
                         latest_transaction: txt_latest_transaction
+                        
 
                     }, function(data,status) {
                         
@@ -363,6 +388,11 @@ if (@$_GET["action"] == "update"){
             });
 
 
+     
+    function selectElement(id, valueToSelect) {    
+    let element = document.getElementById(id);
+    element.value = valueToSelect;
+    }
     </script>
 
 <?php
