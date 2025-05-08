@@ -245,7 +245,7 @@ if (@$_GET["action"] == "update"){
 								case "BRGY. BAGTIC":
 									echo "style = \"background-color: #375623;  color: white \"";
 									break;
-                                    case "BRGY. GUIMBALA-ON":
+                                    case "BRGY. GUIMBALA-ON ":
                                         echo "style = \"background-color: #92d050;  color: white \"";
                                         break;
                                     case "BRGY. BALARING":

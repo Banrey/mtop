@@ -1,0 +1,3 @@
+UPDATE mtop_masterlist_2024 AS ml SET body_number = (SELECT REPLACE (body_number, '-08', '-10') FROM `mtop_masterlist_2024` WHERE body_number = ml.body_number);
+
+change series code

@@ -17,7 +17,7 @@ include("connect.php");
     <div class="row p-2">
         <div class="col-sm-12 ">
 		
-            <h3>Rejected Orders</h3>
+            <h3>Mixed List</h3>
         </div>
     </div>
         <div class="row p-2">
