@@ -68,39 +68,48 @@ if (@$_GET["action"] == "update"){
             </div>
         </div>
 
-        <div class="col-sm-6">                
-            <div class="d-inline-flex col-4 p-2">
-                <div class="form-group">
-                    <label>Body Number *</label>   
-                    <input value="<?php echo $txt_body_number; ?>" type="text" id="body_number" class="form-control rounded" placeholder="Body Number" required pattern="[^\s]" title="This is required">            
-                </div>
-        </div>
-
-        
-            
-        <div class="d-inline-flex align-bottom p-2">
-                <button type="button" id="BtnSearch" class="btn btn-warning btn-block d-inline">Search by Body Number</button>
-            </div>
-
-            
-        </div>
 
 
         <div class="row p-2">
+
+        
+        <div class="col-sm-2">                
+            <div class="d-inline-flex col-12 p-2">
+                <div class="form-group col-12">
+                    <label>Body Number *</label>   
+                    <input value="<?php echo $txt_body_number; ?>" type="text" id="body_number" class="form-control rounded" placeholder="Body Number" required pattern="[^\s]" title="This is required">            
+                </div>
+            </div>
+
+        
+            
+        <div class="d-inline-flex align-bottom p-2 col-12">
+                <button type="button" id="BtnSearchBodyNumber" class="btn btn-warning btn-block d-inline">Search</button>
+            </div>
+
+            
+        </div>
         
         
         
-        <div class="col-sm-4 ">
-            <div class="form-group">
-                                <label>Full Name</label>   
-                                <input value="<?php echo $txt_full_name; ?>" type="text" id="full_name" class="form-control rounded" placeholder="Full Name" > 
-                            
+        <div class="col-sm-4 ">                
+            <div class="d-inline-flex col-12 p-2">
+                <div class="form-group col-12">
+                                    <label>Full Name</label>   
+                                    <input value="<?php echo $txt_full_name; ?>" type="text" id="full_name" class="form-control rounded col-8" placeholder="Full Name" > 
+                                
+                </div>
+            </div>
+            
+        <div class="d-inline-flex align-bottom p-2 col-12">
+                <button type="button" id="BtnSearchName" class="btn btn-warning btn-block d-inline">Search</button>
             </div>
         </div>
 
+
         
-        
-        <div class="col-sm-4 ">
+        <div class="col-sm-6">
+        <div class="d-inline-flex col-12 p-2">
             <div class="form-group">
                                 <label>Route *</label>   
                                 <!-- <input value="<?php //echo $txt_route; ?>" type="text" id="route" class="form-control rounded" placeholder="Route" >  -->
@@ -120,50 +129,67 @@ if (@$_GET["action"] == "update"){
                                  </select>
                             <script> $('#route').val("<?php echo $txt_route; ?>"); </script>
             </div>
-        </div>
-        
-        <div class="col-sm-2 ">
-            <div class="form-group">
-                                <label>Status *</label>   
-                                <input value="<?php echo $txt_status; ?>" type="text" id="status" class="form-control rounded" placeholder="Status" > 
-                            
             </div>
-        </div>
-        
 
-        <div class="row col-sm-12">
+                
+            <div class="d-inline-flex align-bottom p-2 col-12">
+                <button type="button" id="BtnSearchRoute" class="btn btn-warning btn-block d-inline">Search</button>
+            </div>
+        </div>
+
             
-        <div class="col-sm-3 ">
-            <div class="form-group">
-                                <label>Resolution Number *</label>   
-                                <input value="<?php echo $txt_resolution_number; ?>" type="text" id="resolution_number" class="form-control rounded" placeholder="Resolution Number" > 
-                            
-            </div>
         </div>
+
         
-        <div class="col-sm-2 ">
-            <div class="form-group">
-                                <label>Date Received</label>   
-                                <input value="<?php echo $txt_date_received; ?>" type="text" id="date_received" class="form-control rounded" placeholder="Date Received" > 
-                            
+        <div class="container p-3">
+
+        <div class="row"> <!-- row 1 -->
+            
+            <div class="col-sm-2 ">
+                <div class="form-group">
+                                    <label>Status *</label>  
+                                    <!-- <input value="<?php //echo $txt_route; ?>" type="text" id="route" class="form-control rounded" placeholder="Route" >  -->
+                                     <select class="form-select" name="status" id="status">
+                                     <option value="UPDATED">UPDATED</option>
+                                     <option value="EXPIRED">EXPIRED</option>
+    
+                                     </select>
+                                <script> $('#status').val("<?php echo $txt_status; ?>"); </script>
+                                
+                </div>
             </div>
-        </div>
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                                    <label>Resolution Number *</label>   
+                                    <input value="<?php echo $txt_resolution_number; ?>" type="text" id="resolution_number" class="form-control rounded" placeholder="Resolution Number" > 
+                                
+                </div>
+            </div>
         
-        <div class="col-sm-2 ">
-            <div class="form-group">
-                                <label>Date Released</label>   
-                                <input value="<?php echo $txt_date_released; ?>" type="text" id="date_released" class="form-control rounded" placeholder="Date Released" > 
-                            
+            <div class="col-sm-2 ">
+                <div class="form-group">
+                                    <label>Date Received</label>   
+                                    <input value="<?php echo $txt_date_received; ?>" type="text" id="date_received" class="form-control rounded" placeholder="Date Received" > 
+                                
+                </div>
             </div>
-        </div>
         
-        <div class="col-sm-2 ">
-            <div class="form-group">
-                                <label>Date of Expiry</label>   
-                                <input value="<?php echo $txt_date_of_expiry; ?>" type="text" id="date_of_expiry" class="form-control rounded" placeholder="Date of Expiry" > 
-                            
+            <div class="col-sm-2 ">
+                <div class="form-group">
+                                    <label>Date Released</label>   
+                                    <input value="<?php echo $txt_date_released; ?>" type="text" id="date_released" class="form-control rounded" placeholder="Date Released" > 
+                                
+                </div>
             </div>
-        </div>
+            
+            <div class="col-sm-2 ">
+                <div class="form-group">
+                                    <label>Date of Expiry</label>   
+                                    <input value="<?php echo $txt_date_of_expiry; ?>" type="text" id="date_of_expiry" class="form-control rounded" placeholder="Date of Expiry" > 
+                                
+                </div>
+            </div>
 
         </div>
         
@@ -173,6 +199,8 @@ if (@$_GET["action"] == "update"){
                                 <input value="<?php echo $txt_latest_transaction; ?>" type="text" id="latest_transaction" class="form-control rounded" placeholder="Last Transaction" > 
                             
             </div>
+        </div>
+
         </div>
 
             
@@ -208,12 +236,20 @@ if (@$_GET["action"] == "update"){
                         
 						<?php $ctr = 0; ?>
 						<?php 
-                        if (empty($_GET["search"])){
-                        $sql_unit = "SELECT body_number, names, route, date_of_expiry, date_received, date_released, resolution_number, status, latest_transaction
-						             FROM mtop_masterlist_2024" ;
-                         } else{
+                        if (isset($_GET["search"])&& $_GET["term"]=== "body_number"){
                             $sql_unit = "SELECT body_number, names, route, date_of_expiry, date_received, date_released, resolution_number, status, latest_transaction
 						                 FROM mtop_masterlist_2024 WHERE body_number = '".$_GET["search"]."'";
+                         } 
+                        elseif (isset($_GET["search"])&& $_GET["term"]=== "names"){
+                             $sql_unit = "SELECT body_number, names, route, date_of_expiry, date_received, date_released, resolution_number, status, latest_transaction
+                                          FROM mtop_masterlist_2024 WHERE names = '".$_GET["search"]."'";
+                          } 
+                        elseif (isset($_GET["search"])&& $_GET["term"]=== "route"){
+                             $sql_unit = "SELECT body_number, names, route, date_of_expiry, date_received, date_released, resolution_number, status, latest_transaction
+                                          FROM mtop_masterlist_2024 WHERE route = '".$_GET["search"]."'";
+                          } else{
+                            $sql_unit = "SELECT body_number, names, route, date_of_expiry, date_received, date_released, resolution_number, status, latest_transaction
+                                         FROM mtop_masterlist_2024" ;
 
                                         // echo $sql_unit; //debugging show sql
                          }
@@ -322,7 +358,7 @@ if (@$_GET["action"] == "update"){
 				</table>
             </div>            
         </div>
-    </div>
+    </di>
 </div>
 
 <script language="javascript">
@@ -374,11 +410,38 @@ if (@$_GET["action"] == "update"){
             });
 
 
-            $("#BtnSearch").on("click", function() {
+            $("#BtnSearchBodyNumber").on("click", function() {
                 var txt_body_number = $("#body_number").val();
                 let pagelink = "update.php";
                 
                 let result = pagelink.concat("?search=",txt_body_number);
+                result = result.concat("&term=body_number")
+               
+                
+                window.location = result;
+
+
+
+            });
+            $("#BtnSearchName").on("click", function() {
+                var txt_full_name = $("#full_name").val();
+                let pagelink = "update.php";
+                
+                let result = pagelink.concat("?search=",txt_full_name);
+                result = result.concat("&term=names")
+               
+                
+                window.location = result;
+
+
+
+            });
+            $("#BtnSearchRoute").on("click", function() {
+                var txt_route = $("#route").val();
+                let pagelink = "update.php";
+                
+                let result = pagelink.concat("?search=",txt_route);
+                result = result.concat("&term=route")
                
                 
                 window.location = result;
