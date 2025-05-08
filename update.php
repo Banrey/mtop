@@ -265,7 +265,7 @@ if (@$_GET["action"] == "update"){
 						<tr>
 							<td> <a href="update.php?action=update&body_number=<?php echo $get_unit["body_number"]; ?>"> 
 							Update</a> /
-							<a href="process.units.php?action=delete&body_number=<?php echo $get_unit["body_number"]; ?>">
+							<a onclick="return confirm('Are you sure?')" href="process.units.php?action=delete&body_number=<?php echo $get_unit["body_number"]; ?>">
 							Delete</a>
 							</td>
 							<td><?php echo $get_unit["body_number"]?></td>
