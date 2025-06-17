@@ -143,21 +143,6 @@ if (@$_GET["action"] == "update"){
                 </div>
             </div>
         
-            <!-- <div class="col-sm-2 ">
-                <div class="form-group">
-                                    <label>Motor Number</label>   
-                                    <input value="<?php echo $txt_motor_number; ?>" type="text" id="motor_number" class="form-control rounded" placeholder="Motor Number" > 
-                                
-                </div>
-            </div>
-        
-            <div class="col-sm-2 ">
-                <div class="form-group">
-                                    <label>Chasis Number</label>   
-                                    <input value="<?php echo $txt_chasis_number; ?>" type="text" id="chasis_number" class="form-control rounded" placeholder="Chasis Number" > 
-                                
-                </div>
-            </div> -->
 
         </div>
         
@@ -165,12 +150,16 @@ if (@$_GET["action"] == "update"){
 
             
         <div class="row p-3">
-            <div class="col-sm-3">
+            <div class="col-sm-12">
                 <div class="form-group">
 					<input type="hidden" value="<?php echo $txt_id; ?>" id="body_number" >
                     <button type="button" id="BtnAddUnit" class="btn btn-warning btn-block">Save Record</button>
-					<input type="hidden" value="<?php echo $txt_id; ?>" id="body_number" >
+                    
+					<input type="hidden" value="<?php echo $txt_id; ?>" id="clear_filters" >
                     <a href="old_owners.php"><button type="button" class="btn btn-warning btn-block">Clear Search Filters</button></a>
+
+					<input type="hidden" value="<?php echo $txt_id; ?>" id="duplicates" >
+                    <button type="button" id="BtnSearchDuplicate" class="float-end btn btn-warning btn-block">Search Duplicates</button>
                                     
                 </div>
                 
@@ -220,6 +209,16 @@ if (@$_GET["action"] == "update"){
                              (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
                              (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
                                          FROM individual_transaction as it WHERE motor_number = '".$_GET["search"]."'";
+                          }  
+                        elseif ($_GET["term"]=== "duplicate"){
+                             $sql_unit = "SELECT body_number, name, make, motor_number, chasis_number , 
+                             (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches, 
+                             (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches 
+                                        FROM individual_transaction as it 
+                                        WHERE 
+                                        (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) > 1 
+                                        OR 
+                                        (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) > 1;";
                           } else{
                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number, 
                             (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
@@ -352,6 +351,18 @@ if (@$_GET["action"] == "update"){
                 
                 let result = pagelink.concat("?search=",txt_motor_number);
                 result = result.concat("&term=motor_number")
+               
+                
+                window.location = result;
+
+
+
+            });
+
+            $("#BtnSearchDuplicate").on("click", function() {
+                let pagelink = "old_owners.php";
+                
+                let result = pagelink.concat("?term=duplicate")
                
                 
                 window.location = result;
