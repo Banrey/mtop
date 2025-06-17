@@ -96,6 +96,32 @@ if (@$_GET["action"] == "update"){
                 <button type="button" id="BtnSearchName" class="btn btn-warning btn-block d-inline">Search</button>
             </div>
         </div>
+        <div class="col-sm-4 ">                
+            <div class="d-inline-flex col-12 p-2">
+                <div class="form-group col-12">
+                                    <label>Chasis Number</label>   
+                                    <input value="<?php echo $txt_chasis_number; ?>" type="text" id="chasis_number" class="form-control rounded col-8" placeholder="Chasis Number" > 
+                                
+                </div>
+            </div>
+            
+        <div class="d-inline-flex align-bottom p-2 col-12">
+                <button type="button" id="BtnSearchChasis" class="btn btn-warning btn-block d-inline">Search</button>
+            </div>
+        </div>
+        <div class="col-sm-4 ">                
+            <div class="d-inline-flex col-12 p-2">
+                <div class="form-group col-12">
+                                    <label>Motor Number</label>   
+                                    <input value="<?php echo $txt_motor_number; ?>" type="text" id="motor_number" class="form-control rounded col-8" placeholder="Motor Number" > 
+                                
+                </div>
+            </div>
+            
+        <div class="d-inline-flex align-bottom p-2 col-12">
+                <button type="button" id="BtnSearchMotor" class="btn btn-warning btn-block d-inline">Search</button>
+            </div>
+        </div>
 
 
         
@@ -117,7 +143,7 @@ if (@$_GET["action"] == "update"){
                 </div>
             </div>
         
-            <div class="col-sm-2 ">
+            <!-- <div class="col-sm-2 ">
                 <div class="form-group">
                                     <label>Motor Number</label>   
                                     <input value="<?php echo $txt_motor_number; ?>" type="text" id="motor_number" class="form-control rounded" placeholder="Motor Number" > 
@@ -131,7 +157,7 @@ if (@$_GET["action"] == "update"){
                                     <input value="<?php echo $txt_chasis_number; ?>" type="text" id="chasis_number" class="form-control rounded" placeholder="Chasis Number" > 
                                 
                 </div>
-            </div>
+            </div> -->
 
         </div>
         
@@ -143,8 +169,11 @@ if (@$_GET["action"] == "update"){
                 <div class="form-group">
 					<input type="hidden" value="<?php echo $txt_id; ?>" id="body_number" >
                     <button type="button" id="BtnAddUnit" class="btn btn-warning btn-block">Save Record</button>
+					<input type="hidden" value="<?php echo $txt_id; ?>" id="body_number" >
+                    <a href="old_owners.php"><button type="button" class="btn btn-warning btn-block">Clear Search Filters</button></a>
                                     
                 </div>
+                
             </div>
         </div>
 
@@ -153,12 +182,14 @@ if (@$_GET["action"] == "update"){
 				<table class="table table-striped">
 					<thead>
 						<tr> 
-							<td width= "20%">Action</td>
-							<td width= "20%">Body Number</td>
-							<td width= "20%">Full Name</td>
+							<td width= "15%">Action</td>
+							<td width= "15%">Body Number</td>
+							<td width= "15%">Full Name</td>
 							<td width= "15%">Make</td>
 							<td width= "15%">Motor  Number</td>
 							<td width= "15%">Chasis  Number</td>
+							<td width= "5%">Motor  Matches</td>
+							<td width= "5%">Chasis  Matches</td>
 						</tr>
 					</thead>
                     
@@ -167,15 +198,33 @@ if (@$_GET["action"] == "update"){
 						<?php $ctr = 0; ?>
 						<?php 
                         if (isset($_GET["search"])&& $_GET["term"]=== "body_number"){
-                            $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number
-                                         FROM individual_transaction WHERE body_number = '".$_GET["search"]."'";
+                            $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number, 
+                            (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
+                            (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
+                                         FROM individual_transaction as it WHERE body_number = '".$_GET["search"]."'";
                          } 
                         elseif (isset($_GET["search"])&& $_GET["term"]=== "names"){
-                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number
-                                         FROM individual_transaction WHERE names = '".$_GET["search"]."'";
+                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , 
+                             (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
+                             (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
+                                         FROM individual_transaction as it WHERE names = '".$_GET["search"]."'";
+                          } 
+                        elseif (isset($_GET["search"])&& $_GET["term"]=== "chasis_number"){
+                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , 
+                             (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
+                             (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
+                                         FROM individual_transaction as it WHERE chasis_number = '".$_GET["search"]."'";
+                          } 
+                        elseif (isset($_GET["search"])&& $_GET["term"]=== "motor_number"){
+                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , 
+                             (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
+                             (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
+                                         FROM individual_transaction as it WHERE motor_number = '".$_GET["search"]."'";
                           } else{
-                            $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number
-                                         FROM individual_transaction" ;
+                            $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number, 
+                            (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
+                            (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
+                                         FROM individual_transaction as it" ;
 
                                         // echo $sql_unit; //debugging show sql
                          }
@@ -199,6 +248,8 @@ if (@$_GET["action"] == "update"){
 							<td><?php echo $get_unit["make"] ?></td>
 							<td><?php echo $get_unit["motor_number"] ?></td>
 							<td><?php echo $get_unit["chasis_number"] ?></td>
+							<td><?php echo $get_unit["motor_matches"] ?></td>
+							<td><?php echo $get_unit["chasis_matches"] ?></td>
 						</tr>
 						<?php } ?>
 					</tbody>
@@ -255,7 +306,7 @@ if (@$_GET["action"] == "update"){
 
             $("#BtnSearchBodyNumber").on("click", function() {
                 var txt_body_number = $("#body_number").val();
-                let pagelink = "update.php";
+                let pagelink = "old_owners.php";
                 
                 let result = pagelink.concat("?search=",txt_body_number);
                 result = result.concat("&term=body_number")
@@ -268,7 +319,7 @@ if (@$_GET["action"] == "update"){
             });
             $("#BtnSearchName").on("click", function() {
                 var txt_full_name = $("#full_name").val();
-                let pagelink = "update.php";
+                let pagelink = "old_owners.php";
                 
                 let result = pagelink.concat("?search=",txt_full_name);
                 result = result.concat("&term=names")
@@ -279,12 +330,28 @@ if (@$_GET["action"] == "update"){
 
 
             });
-            $("#BtnSearchRoute").on("click", function() {
-                var txt_route = $("#route").val();
-                let pagelink = "update.php";
+            
+            $("#BtnSearchChasis").on("click", function() {
+                var txt_chasis_number = $("#chasis_number").val();
+                let pagelink = "old_owners.php";
                 
-                let result = pagelink.concat("?search=",txt_route);
-                result = result.concat("&term=route")
+                let result = pagelink.concat("?search=",txt_chasis_number);
+                result = result.concat("&term=chasis_number")
+               
+                
+                window.location = result;
+
+
+
+            });
+
+
+            $("#BtnSearchMotor").on("click", function() {
+                var txt_motor_number = $("#motor_number").val();
+                let pagelink = "old_owners.php";
+                
+                let result = pagelink.concat("?search=",txt_motor_number);
+                result = result.concat("&term=motor_number")
                
                 
                 window.location = result;
@@ -304,3 +371,4 @@ if (@$_GET["action"] == "update"){
 <?php
 include("admin.footer.php");
 ?>
+
