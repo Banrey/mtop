@@ -6,31 +6,35 @@ if(!file_exists("connect.php")){
     exit();
 }
 include("connect.php");
-$txt_body_number = "";
+$txt_driver_number = "";
 if(isset($_GET["search"])){
     
-$txt_body_number = $_GET["search"];
+$txt_driver_number = $_GET["search"];
 }
+$txt_body_number = "";
+$txt_driver_order = "";
 $txt_full_name = "";
 $txt_make = "";
 $txt_motor_number = "";
 $txt_chasis_number = "";
 
 if (@$_GET["action"] == "update"){
-	$sql_cat = "SELECT  body_number, name, make, motor_number, chasis_number
+	$sql_cat = "SELECT driver_number , body_number, name, make, motor_number, chasis_number, driver_order
                 FROM individual_transaction
-                WHERE body_number = ?";
+                WHERE driver_number = ?";
 
     if ($cat_check = mysqli_prepare($conn, $sql_cat)){
-        mysqli_stmt_bind_param($cat_check, "s", $body_number,);
+        mysqli_stmt_bind_param($cat_check, "s", $driver_number,);
         
-        $body_number = $_GET['body_number'];
+        $driver_number = $_GET['driver_number'];
 
         mysqli_stmt_execute($cat_check);
         
-        mysqli_stmt_bind_result($cat_check, $body_number,$name, $make, $motor_number, $chasis_number);
+        mysqli_stmt_bind_result($cat_check, $driver_number, $body_number, $name, $make, $motor_number, $chasis_number, $driver_order);
         while(mysqli_stmt_fetch($cat_check)){
 			
+            $txt_driver_number = $driver_number;
+            $txt_driver_order = $driver_order;
             $txt_body_number = $body_number;
             $txt_full_name = $name;
             $txt_make = $make;
@@ -142,6 +146,14 @@ if (@$_GET["action"] == "update"){
                                 
                 </div>
             </div>
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                                    <label>Driver Order</label>   
+                                    <input value="<?php echo $txt_driver_order; ?>" type="text" id="driver_order" class="form-control rounded" placeholder="Driver Order" > 
+                                
+                </div>
+            </div>
         
 
         </div>
@@ -153,6 +165,7 @@ if (@$_GET["action"] == "update"){
             <div class="col-sm-12">
                 <div class="form-group">
 					<input type="hidden" value="<?php echo $txt_id; ?>" id="body_number" >
+					<input type="hidden" value=" <?php echo $txt_driver_number; ?> " id="driver_number" >
                     <button type="button" id="BtnAddUnit" class="btn btn-warning btn-block">Save Record</button>
                     
 					<input type="hidden" value="<?php echo $txt_id; ?>" id="clear_filters" >
@@ -171,8 +184,9 @@ if (@$_GET["action"] == "update"){
 				<table class="table table-striped">
 					<thead>
 						<tr> 
-							<td width= "15%">Action</td>
-							<td width= "15%">Body Number</td>
+							<td width= "10%">Action</td>
+							<td width= "10%">Body Number</td>
+							<td width= "10%">Driver Order</td>
 							<td width= "15%">Full Name</td>
 							<td width= "15%">Make</td>
 							<td width= "15%">Motor  Number</td>
@@ -187,43 +201,50 @@ if (@$_GET["action"] == "update"){
 						<?php $ctr = 0; ?>
 						<?php 
                         if (isset($_GET["search"])&& $_GET["term"]=== "body_number"){
-                            $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number, 
+
+                            $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number, driver_number , driver_order,
                             (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
                             (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
-                                         FROM individual_transaction as it WHERE body_number = '".$_GET["search"]."'";
+                                         FROM individual_transaction as it WHERE body_number = '".$_GET["search"]."'
+                                         ORDER BY body_number, driver_order";
+
                          } 
                         elseif (isset($_GET["search"])&& $_GET["term"]=== "names"){
-                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , 
+                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , driver_number , driver_order,
                              (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
                              (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
-                                         FROM individual_transaction as it WHERE names = '".$_GET["search"]."'";
+                                         FROM individual_transaction as it WHERE name = '".$_GET["search"]."'
+                                         ORDER BY body_number, driver_order";
                           } 
                         elseif (isset($_GET["search"])&& $_GET["term"]=== "chasis_number"){
-                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , 
+                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , driver_number , driver_order,
                              (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
                              (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
-                                         FROM individual_transaction as it WHERE chasis_number = '".$_GET["search"]."'";
+                                         FROM individual_transaction as it WHERE chasis_number = '".$_GET["search"]."'
+                                         ORDER BY body_number, driver_order";
                           } 
                         elseif (isset($_GET["search"])&& $_GET["term"]=== "motor_number"){
-                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , 
+                             $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number , driver_number , driver_order,
                              (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
                              (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
-                                         FROM individual_transaction as it WHERE motor_number = '".$_GET["search"]."'";
+                                         FROM individual_transaction as it WHERE motor_number = '".$_GET["search"]."'
+                                         ORDER BY body_number, driver_order";
                           }  
-                        elseif ($_GET["term"]=== "duplicate"){
-                             $sql_unit = "SELECT body_number, name, make, motor_number, chasis_number , 
+                        elseif (isset($_GET["term"])&& $_GET["term"]=== "duplicate"){
+                             $sql_unit = "SELECT body_number, name, make, motor_number, chasis_number , driver_number , driver_order,
                              (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches, 
                              (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches 
                                         FROM individual_transaction as it 
                                         WHERE 
                                         (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) > 1 
                                         OR 
-                                        (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) > 1;";
+                                        (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) > 1;
+                                        ORDER BY body_number, driver_order ";
                           } else{
-                            $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number, 
+                            $sql_unit = "SELECT  body_number, name, make, motor_number, chasis_number, driver_number , driver_order,
                             (SELECT COUNT(motor_number) FROM `individual_transaction` WHERE motor_number = it.motor_number GROUP BY motor_number) as motor_matches,
                             (SELECT COUNT(chasis_number) FROM `individual_transaction` WHERE chasis_number = it.chasis_number GROUP BY chasis_number) as chasis_matches
-                                         FROM individual_transaction as it" ;
+                                         FROM individual_transaction as it ORDER BY body_number, driver_order " ;
 
                                         // echo $sql_unit; //debugging show sql
                          }
@@ -237,12 +258,13 @@ if (@$_GET["action"] == "update"){
 						<?php while($get_unit = mysqli_fetch_array($qry_unit)){ ?>
 						<?php $ctr++; ?>
 						<tr>
-							<td> <a href="old_owners.php?action=update&body_number=<?php echo $get_unit["body_number"]; ?>"> 
+							<td> <a href="old_owners.php?action=update&driver_number=<?php echo $get_unit["driver_number"]; ?>"> 
 							Update</a> /
-							<a onclick="return confirm('Are you sure?')" href="process.owners.php?action=delete&body_number=<?php echo $get_unit["body_number"]; ?>">
+							<a onclick="return confirm('Are you sure?')" href="process.owners.php?action=delete&driver_number=<?php echo $get_unit["driver_number"]; ?>">
 							Delete</a>
 							</td>
 							<td><?php echo $get_unit["body_number"]?></td>
+							<td><?php echo $get_unit["driver_order"]?></td>
 							<td ><?php echo $get_unit["name"] ?></td>
 							<td><?php echo $get_unit["make"] ?></td>
 							<td><?php echo $get_unit["motor_number"] ?></td>
@@ -269,6 +291,8 @@ if (@$_GET["action"] == "update"){
             var alertNotice = "Fields marked with * are required.";
             
 
+                var txt_driver_number = $("#driver_number").val();
+                var txt_driver_order = $("#driver_order").val();
                 var txt_body_number = $("#body_number").val();
                 var txt_full_name = $("#full_name").val();
                 var txt_make = $("#make").val();
@@ -285,8 +309,14 @@ if (@$_GET["action"] == "update"){
                 
 
                 else {
+                    if (txt_driver_order == null || txt_driver_order == "") {
+                    txt_driver_order = 1;
+                }
+
                     
                     $.post("process.owners.php", {
+                        driver_number: txt_driver_number,
+                        driver_order: txt_driver_order,
                         body_number: txt_body_number,
                         name: txt_full_name,
                         make: txt_make,
@@ -295,7 +325,7 @@ if (@$_GET["action"] == "update"){
                         
 
                     }, function(data,status) {                        
-						if(status == "success"){
+						if(status == "success"){                            
                         window.location = "old_owners.php";
 						}
                     })
