@@ -269,8 +269,12 @@ if (@$_GET["action"] == "update"){
 							<td><?php echo $get_unit["make"] ?></td>
 							<td><?php echo $get_unit["motor_number"] ?></td>
 							<td><?php echo $get_unit["chasis_number"] ?></td>
-							<td><?php echo $get_unit["motor_matches"] ?></td>
-							<td><?php echo $get_unit["chasis_matches"] ?></td>
+							<td><?php if ($get_unit["motor_number"] == null ) {
+                                echo "0";
+                            } else{ echo $get_unit["motor_matches"]; }  ?></td>
+							<td><?php if ($get_unit["chasis_number"] == null ) {
+                                echo "0";
+                            } else{ echo $get_unit["chasis_matches"]; }  ?></td>
 						</tr>
 						<?php } ?>
 					</tbody>
